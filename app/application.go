@@ -1,10 +1,11 @@
 package app
 
 import (
+	"AuthInGo/config/env"
+	"AuthInGo/router"
 	"fmt"
 	"net/http"
 	"time"
-	"AuthInGo/config/env"
 )
 
 // Config holds the configuration for the server
@@ -33,7 +34,7 @@ func NewApplication(cfg Config) *Application {
 func (app *Application) Run() error {
 	server := &http.Server{
 		Addr:         app.Config.Addr,
-		Handler:      nil, // set up chi router or other handlers here
+		Handler:      router.SetupRouter(),
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
