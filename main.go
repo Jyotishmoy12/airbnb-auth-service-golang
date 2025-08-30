@@ -2,10 +2,12 @@ package main
 
 import (
 	"AuthInGo/app"
+	config "AuthInGo/config/env"
 )
 
-func main(){
-	cfg:=  app.NewConfig(":8080")
+func main() {
+	config.Load()
+	cfg := app.NewConfig()
 	app := app.NewApplication(cfg)
 
 	app.Run()

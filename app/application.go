@@ -4,20 +4,23 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	"AuthInGo/config/env"
 )
 
 // Config holds the configuration for the server
 type Config struct {
 	Addr string
 }
+
 // Application represents the application with its configuration
 type Application struct {
 	Config Config
 }
 
-func NewConfig(addr string) Config {
+func NewConfig() Config {
+	port := config.GetString("PORT", ":8080")
 	return Config{
-		Addr: addr,
+		Addr: port,
 	}
 }
 
@@ -28,12 +31,13 @@ func NewApplication(cfg Config) *Application {
 }
 
 func (app *Application) Run() error {
-     server := &http.Server{
-		Addr:   app.Config.Addr,
-		Handler: nil, // set up chi router or other handlers here
-		ReadTimeout: 10* time.Second,
-		WriteTimeout: 10* time.Second,
-	 }
-	 fmt.Println("Starting server on", app.Config.Addr)
-	 return server.ListenAndServe()
+	server := &http.Server{
+		Addr:         app.Config.Addr,
+		Handler:      nil, // set up chi router or other handlers here
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	fmt.Println("Starting server on", app.Config.Addr)
+	return server.ListenAndServe()
 }
